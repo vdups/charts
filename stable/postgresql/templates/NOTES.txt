@@ -29,7 +29,7 @@ To get the password for "{{ .Values.postgresqlUsername }}" run:
 
 To connect to your database run the following command:
 
-    kubectl run {{ template "postgresql.fullname" . }}-client --rm --tty -i --restart='Never' --namespace {{ .Release.Namespace }} --image {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }} --env="PGPASSWORD=$POSTGRES_PASSWORD" {{- if and (.Values.networkPolicy.enabled) (not .Values.networkPolicy.allowExternal) }}
+    kubectl run {{ template "postgresql.fullname" . }}-client --rm --tty -i --restart='Never' --namespace {{ .Release.Namespace }} --image {{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag }} --image-pull-policy={{ .Values.image.pullPolicy }} --env="PGPASSWORD=$POSTGRES_PASSWORD" {{- if and (.Values.networkPolicy.enabled) (not .Values.networkPolicy.allowExternal) }}
    --labels="{{ template "postgresql.fullname" . }}-client=true" {{- end }} --command -- psql --host {{ template "postgresql.fullname" . }} -U {{ .Values.postgresqlUsername }}
 
 {{ if and (.Values.networkPolicy.enabled) (not .Values.networkPolicy.allowExternal) }}
